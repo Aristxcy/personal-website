@@ -1,10 +1,10 @@
-## Teaching Experience
+## Teaching
 
-1. Introduction to Machine Learning, Spring 2026 (ECUST, Undergraduate Level)
-2. Introduction to Decision Analytics and Revenue Management, Spring 2026 (ECUST, Undergraduate Level)
-3. Optimization Method, Fall 2026 (ECUST, Graduate Level)
+### Undergraduate Level
 
-## Service
+1. Introduction to Machine Learning (机器学习导论), Spring 2026, at ECUST
+2. Introduction to Decision Analytics and Revenue Management, Spring 2026, at ECUST
 
-- Reviewer for UAI 2025, ICML 2025, NeurIPS 2025
-- Reviewer for ICML 2026, UAI 2026
+### Graduate Level
+1. Optimization Methods (优化方法), Fall 2026, at ECUST
+2. Machine Learning (机器学习), Fall 2026, at ECUST

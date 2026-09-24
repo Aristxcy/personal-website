@@ -1,3 +1,24 @@
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../assets/fonts/roboto-latin-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  src: url("../assets/fonts/roboto-latin-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 700;
+  src: url("../assets/fonts/roboto-latin-700.woff2") format("woff2");
+}
+
 :root {
   --crimson: #980000;
   --ink: #1c1c1c;
@@ -80,7 +101,7 @@ p.center { text-align: center; }
 
 .photo {
   display: block;
-  width: 470px;
+  width: 320px;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -89,12 +110,15 @@ p.center { text-align: center; }
 
 .home-grid {
   display: grid;
-  grid-template-columns: 470px minmax(0, 1fr);
-  gap: 48px;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 40px;
   align-items: start;
 }
 
-.home-left .photo { margin: 0; }
+.home-left .photo {
+  width: 100%;
+  margin: 0;
+}
 
 .home-left p {
   margin: 14px 0 0;
@@ -116,15 +140,14 @@ p.center { text-align: center; }
 }
 
 .toc-fab {
-  writing-mode: vertical-rl;
-  padding: 16px 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
   border: 0;
-  border-radius: 6px 0 0 6px;
+  border-radius: 8px 0 0 8px;
   background: var(--crimson);
   color: #fff;
-  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 13px;
-  letter-spacing: 1px;
   cursor: pointer;
 }
 
@@ -171,6 +194,14 @@ h2 {
 }
 
 h2:first-child { margin-top: 0; }
+
+h3 {
+  margin: 28px 0 10px;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
 
 .note { font-size: 10.67px; }
 

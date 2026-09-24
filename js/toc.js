@@ -9,6 +9,8 @@
   fab.addEventListener("click", function () {
     setOpen(!widget.classList.contains("open"));
   });
+  widget.addEventListener("mouseenter", function () { setOpen(true); });
+  widget.addEventListener("mouseleave", function () { setOpen(false); });
   widget.querySelectorAll(".toc-panel a").forEach(function (a) {
     a.addEventListener("click", function () { setOpen(false); });
   });

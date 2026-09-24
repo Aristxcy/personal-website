@@ -1,9 +1,5 @@
-Here are some results derived with AI assistance.
+Blogs
 
-<!-- 添加新条目的格式（取消注释并修改即可）：
+## AI-assisted Results
 
-## 条目标题
-2026-09-24 · [PDF](files/your-file.pdf)
-
-条目的简介段落，可多行。
--->
+1. A PTAS for Assortment Optimization under the Mallows Choice Model, see [here](files/mallows-ptas.pdf).

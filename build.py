@@ -9,11 +9,14 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 PAGES = [
     ('index.html', 'home', 'Home | Chenyu Xue', 'Personal academic homepage of Chenyu Xue.'),
     ('blogs.html', 'blogs', 'Blogs | Chenyu Xue', 'Blog notes of Chenyu Xue.'),
-    ('research.html', 'research', 'Research | Chenyu Xue', 'Publications and talks of Chenyu Xue.'),
-    ('teaching.html', 'teaching', 'Teaching &amp; Service | Chenyu Xue', 'Teaching experience and academic service of Chenyu Xue.'),
+    ('research.html', 'research', 'Research | Chenyu Xue', 'Publications of Chenyu Xue.'),
+    ('talks.html', 'talks', 'Talks | Chenyu Xue', 'Talks of Chenyu Xue.'),
+    ('teaching.html', 'teaching', 'Teaching | Chenyu Xue', 'Teaching experience of Chenyu Xue.'),
+    ('service.html', 'service', 'Service | Chenyu Xue', 'Academic service of Chenyu Xue.'),
 ]
 
-NAV = [('index.html', 'Home'), ('blogs.html', 'Blogs'), ('research.html', 'Research'), ('teaching.html', 'Teaching &amp; Service')]
+NAV = [('index.html', 'Home'), ('blogs.html', 'Blogs'), ('research.html', 'Research'),
+       ('talks.html', 'Talks'), ('teaching.html', 'Teaching'), ('service.html', 'Service')]
 
 TEMPLATE = '''<!DOCTYPE html>
 <html lang="en">
@@ -22,10 +25,11 @@ TEMPLATE = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script>
+window.MathJax = {{ tex: {{ inlineMath: [['$', '$'], ['\\\\(', '\\\\)']] }} }};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -73,7 +77,10 @@ def parse(md):
                     i += 1
             i += 1
             continue
-        if line.startswith('## '):
+        if line.startswith('### '):
+            blocks.append({'t': 'h3', 'text': line[4:].strip()})
+            i += 1
+        elif line.startswith('## '):
             blocks.append({'t': 'h2', 'text': line[3:].strip()})
             i += 1
         elif line.startswith('> '):
@@ -103,7 +110,7 @@ def parse(md):
         else:
             buf = [line.strip()]
             i += 1
-            while i < len(lines) and lines[i].strip() and not re.match(r'^(##\s|> |!\\[|\d+\. |- )', lines[i]):
+            while i < len(lines) and lines[i].strip() and not re.match(r'^(###\s|##\s|> |!\\[|\d+\. |- )', lines[i]):
                 buf.append(lines[i].strip())
                 i += 1
             blocks.append({'t': 'p', 'html': inline(' '.join(buf))})
@@ -120,6 +127,8 @@ def render(blocks, page_id):
             sid = slug(b['text'])
             out.append('<h2 id="%s">%s</h2>' % (sid, esc(b['text'])))
             toc.append({'id': sid, 'text': b['text']})
+        elif b['t'] == 'h3':
+            out.append('<h3>%s</h3>' % esc(b['text']))
         elif b['t'] == 'note':
             out.append('<p class="note">%s</p>' % b['html'])
         elif b['t'] == 'img':
@@ -156,7 +165,7 @@ def render(blocks, page_id):
 
 
 def toc_html(toc):
-    if not toc:
+    if len(toc) < 2:
         return ''
     parts = ['<nav class="toc-widget" aria-label="Contents">',
              '<div class="toc-panel" id="toc-panel">']
@@ -164,7 +173,10 @@ def toc_html(toc):
         parts.append('<a href="#%s">%s</a>' % (sec['id'], esc(sec['text'])))
     parts.append('</div>')
     parts.append('<button class="toc-fab" type="button" aria-expanded="false" '
-                 'aria-controls="toc-panel">Contents</button>')
+                 'aria-controls="toc-panel" aria-label="Contents">'
+                 '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+                 '<path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" '
+                 'stroke-width="2" stroke-linecap="round"/></svg></button>')
     parts.append('</nav>')
     return '\n'.join(parts)
 
