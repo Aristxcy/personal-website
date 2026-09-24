@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Build the static site from content/*.md. Usage: python3 build.py"""
+import datetime
 import io
 import os
 import re
@@ -40,7 +41,7 @@ window.MathJax = {{ tex: {{ inlineMath: [['$', '$'], ['\\\\(', '\\\\)']] }} }};
   </nav>
 </header>
 
-<main class="content">
+<main class="content{mainclass}">
 {main}
 </main>
 
@@ -57,7 +58,10 @@ def esc(s):
 def inline(s):
     s = esc(s)
     s = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', s)
+    s = re.sub(r'\*\[([^\]]*)\]\*\(([^)\s]+)\)', r'<em><a class="plain" href="\2">\1</a></em>', s)
+    s = re.sub(r'_([^_]+)_', r'<em>\1</em>', s)
     s = re.sub(r'\[([^\]]*)\]\(([^)\s]+)\)', r'<a href="\2">\1</a>', s)
+    s = re.sub(r'[A-Za-z0-9._]+ \[at\] [A-Za-z0-9._-]+(?: \[dot\] [A-Za-z0-9._-]+)*', r'<span class="nowrap">\g<0></span>', s)
     return s
 
 
@@ -90,11 +94,13 @@ def parse(md):
             m = re.match(r'!\[([^\]]*)\]\(([^)]+)\)', line)
             blocks.append({'t': 'img', 'alt': m.group(1), 'src': m.group(2)})
             i += 1
-        elif re.match(r'^\d+\.\s+', line):
+        elif re.match(r'^\[\d+\]\s+', line) or re.match(r'^\d+\.\s+', line):
             items = []
-            while i < len(lines) and re.match(r'^\d+\.\s+', lines[i]):
-                m = re.match(r'^(\d+)\.\s+(.*)$', lines[i].rstrip())
-                item = {'num': int(m.group(1)), 'title': m.group(2).strip(), 'details': []}
+            while i < len(lines) and (re.match(r'^\[\d+\]\s+', lines[i]) or re.match(r'^\d+\.\s+', lines[i])):
+                m = re.match(r'^(?:\[(\d+)\]|(\d+)\.)\s+(.*)$', lines[i].rstrip())
+                num = int(m.group(1) or m.group(2))
+                item = {'num': num, 'bracket': m.group(1) is not None,
+                        'title': m.group(3).strip(), 'details': []}
                 i += 1
                 while i < len(lines) and re.match(r'^\s+-\s+', lines[i]):
                     item['details'].append(inline(re.match(r'^\s+-\s+(.*)$', lines[i].rstrip()).group(1)))
@@ -110,7 +116,7 @@ def parse(md):
         else:
             buf = [line.strip()]
             i += 1
-            while i < len(lines) and lines[i].strip() and not re.match(r'^(###\s|##\s|> |!\\[|\d+\. |- )', lines[i]):
+            while i < len(lines) and lines[i].strip() and not re.match(r'^(#{2,3}\s|>\s|!\[|\[\d+\]\s|\d+\.\s|-\s)', lines[i]):
                 buf.append(lines[i].strip())
                 i += 1
             blocks.append({'t': 'p', 'html': inline(' '.join(buf))})
@@ -120,15 +126,17 @@ def parse(md):
 def render(blocks, page_id):
     out = []
     toc = []
+    ol_toc = []
     pid = 0
     tid = 0
     for b in blocks:
         if b['t'] == 'h2':
             sid = slug(b['text'])
             out.append('<h2 id="%s">%s</h2>' % (sid, esc(b['text'])))
-            toc.append({'id': sid, 'text': b['text']})
         elif b['t'] == 'h3':
-            out.append('<h3>%s</h3>' % esc(b['text']))
+            sid = slug(b['text'])
+            out.append('<h3 id="%s">%s</h3>' % (sid, esc(b['text'])))
+            toc.append({'id': sid, 'text': b['text']})
         elif b['t'] == 'note':
             out.append('<p class="note">%s</p>' % b['html'])
         elif b['t'] == 'img':
@@ -136,8 +144,13 @@ def render(blocks, page_id):
         elif b['t'] == 'p':
             out.append('<p>%s</p>' % b['html'])
         elif b['t'] == 'ol':
-            start = ' start="%d"' % b['items'][0]['num'] if b['items'][0]['num'] != 1 else ''
-            parts = ['<ol class="papers"%s>' % start]
+            bracket = b['items'][0].get('bracket')
+            first = b['items'][0]['num']
+            if bracket:
+                parts = ['<ol class="papers bracket" style="counter-reset: paper %d">' % (first - 1)]
+            else:
+                start = ' start="%d"' % first if first != 1 else ''
+                parts = ['<ol class="papers"%s>' % start]
             for item in b['items']:
                 pid += 1
                 anchor = 'p%d' % pid
@@ -151,6 +164,7 @@ def render(blocks, page_id):
                         parts.append('<li><p>%s</p></li>' % d)
                     parts.append('</ul>')
                 parts.append('</li>')
+                ol_toc.append({'id': anchor, 'text': re.sub(r'<[^>]+>', '', title_html)})
             parts.append('</ol>')
             out.append('\n'.join(parts))
         elif b['t'] == 'ul':
@@ -161,11 +175,13 @@ def render(blocks, page_id):
                 parts.append('<li id="%s"><p>%s</p></li>' % (anchor, it))
             parts.append('</ul>')
             out.append('\n'.join(parts))
+    if not toc:
+        toc = ol_toc
     return '\n'.join(out), toc
 
 
 def toc_html(toc):
-    if len(toc) < 2:
+    if not toc:
         return ''
     parts = ['<nav class="toc-widget" aria-label="Contents">',
              '<div class="toc-panel" id="toc-panel">']
@@ -186,17 +202,22 @@ def main():
         md = io.open(os.path.join(ROOT, 'content', page_id + '.md'), encoding='utf-8').read()
         blocks = parse(md)
         body, toc = render(blocks, page_id)
+        if page_id == 'talks':
+            toc = []
         if page_id == 'home':
             m = re.match(r'(<img[^>]*>)\s*(<p>.*?</p>)\s*(.*)', body, re.S)
             main_html = ('<div class="home-grid">\n<div class="home-left">\n%s\n%s\n</div>\n'
-                         '<div class="home-right">\n%s\n</div>\n</div>'
-                         % (m.group(1), m.group(2), m.group(3)))
+                         '<div class="home-right">\n%s\n</div>\n</div>\n'
+                         '<p class="updated">Last updated: %s</p>'
+                         % (m.group(1), m.group(2), m.group(3),
+                            datetime.date.today().isoformat()))
         elif toc:
             main_html = '<div class="page-body">\n%s\n</div>\n%s' % (body, toc_html(toc))
         else:
             main_html = body
         nav = '\n'.join('    <a href="%s"%s>%s</a>' % (h, ' aria-current="page"' if h == fname else '', t) for h, t in NAV)
-        html = TEMPLATE.format(title=title, desc=desc, nav=nav, main=main_html)
+        html = TEMPLATE.format(title=title, desc=desc, nav=nav, main=main_html,
+                               mainclass=' content-home' if page_id == 'home' else '')
         io.open(os.path.join(ROOT, fname), 'w', encoding='utf-8').write(html)
         print('built', fname)
 

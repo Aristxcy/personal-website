@@ -7,4 +7,4 @@ My research interests intersect optimization, reinforcement learning, statistics
 
 I was also a visiting Ph.D. student at Department of Industrial Systems Engineering & Management (ISEM), National University of Singapore (NUS), and supervised by Professor [Xiaobo Li](https://sites.google.com/site/lixiaobohome/home).
 
-Please feel free to contact me at: chenyu.xue [at] ecust [dot] edu [dot] cn.
+Please feel free to contact me at: chenyu.xue [at] ecust [dot] edu [dot] cn, and welcome to any potential collaboration.
