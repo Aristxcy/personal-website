@@ -1,56 +1,75 @@
 # 个人学术主页（GitHub Pages 版）
 
-仿照 Google Sites 学术主页风格（深红顶栏 + 侧边抽屉导航 + 居中内容栏）的纯静态个人网站，
-无需任何构建步骤，可直接托管到 GitHub Pages。
+仿照原 Google Sites 学术主页排版的静态网站：深红页眉（右上角站内导航）、
+Verdana 正文、下划线章节标题、编号论文列表。
+**所有文字内容外置在 `content/*.md`（Markdown），改内容不需要碰 HTML。**
 
 ## 目录结构
 
 ```
 .
-├── index.html        首页：照片 + 个人简介
-├── research.html     研究：论文 / 报告列表
-├── teaching.html     教学与服务
-├── blogs.html        博客列表
-├── css/style.css     全站样式（颜色、字号等都在文件开头的 :root 里）
-├── js/nav.js         汉堡菜单抽屉逻辑
-└── assets/photo.svg  首页照片占位图
+├── content/            全部内容（唯一需要编辑的地方）
+│   ├── home.md         首页：照片、照片说明、自我介绍
+│   ├── research.md     研究：论文 / 报告
+│   ├── teaching.md     教学与服务
+│   └── blogs.md        博客 / PDF 笔记
+├── files/              放 PDF 等附件（blogs 里链接到这里）
+├── assets/photo.svg    首页照片（占位图，替换成自己的照片即可）
+├── build.py            构建脚本：content/*.md → 4 个 HTML 页面
+├── css/style.css       样式
+├── index.html          ┐
+├── blogs.html          │ 由 build.py 生成，不要直接编辑
+├── research.html       │
+└── teaching.html       ┘
 ```
 
 ## 本地预览
 
 ```bash
-python3 -m http.server 8000
-# 浏览器打开 http://localhost:8000
+python3 build.py            # 修改 content 后重新生成页面
+python3 -m http.server 8000 # 浏览器打开 http://localhost:8000
 ```
+
+## 修改内容
+
+编辑 `content/` 下对应的 `.md` 文件，然后运行 `python3 build.py`，
+提交并推送后 GitHub Pages 自动更新。
+
+Markdown 语法约定：
+
+- `## 标题`：章节标题（自动生成页内目录导航窗）
+- `1. [**论文标题**(链接)](https://...)`：编号论文条目；
+  下一行缩进 + `- ` 的条目渲染为小字方块项目符号（作者、期刊、备注）
+- `- 条目`：普通项目符号列表（如 Teaching / Service）
+- `> 注释`：章节标题下的小字注释
+- `**加粗**`、`[文字](网址)`：行内加粗与链接
+- 首页第一行 `![说明](图片路径)` 是照片，第二行是照片说明，
+  之后各段为自我介绍（桌面端左照片、右介绍两栏）
+
+### 在 Blogs 添加 PDF
+
+1. 把 PDF 放进 `files/` 目录（例如 `files/notes-2026.pdf`）；
+2. 在 `content/blogs.md` 追加：
+
+   ```markdown
+   ## 笔记标题
+   2026-09-24 · [PDF](files/notes-2026.pdf)
+
+   一两句简介。
+   ```
+
+3. `python3 build.py` 后提交推送。
+
+### 替换照片
+
+把自己的照片保存为 `assets/photo.jpg`（或任意文件名），
+修改 `content/home.md` 第一行为 `![Photo](assets/photo.jpg)` 后重新构建。
 
 ## 部署到 GitHub Pages
 
-1. 在 GitHub 上新建一个仓库（例如 `personal-website`），把本目录所有文件推送上去：
+仓库已推送至 `github.com/Aristxcy/personal-website`。
+若尚未开启 Pages：仓库 **Settings → Pages → Source: Deploy from a branch**，
+Branch 选 `main`、目录 `/ (root)`。
+站点地址：https://aristxcy.github.io/personal-website/
 
-   ```bash
-   git init
-   git add .
-   git commit -m "personal website"
-   git branch -M main
-   git remote add origin git@github.com:<你的用户名>/personal-website.git
-   git push -u origin main
-   ```
-
-2. 打开仓库的 **Settings → Pages**。
-3. **Source** 选择 *Deploy from a branch*，Branch 选 `main`、目录选 `/ (root)`，保存。
-4. 等待 1–2 分钟，访问 `https://<你的用户名>.github.io/personal-website/`。
-
-> 所有链接均为相对路径，放在仓库根目录或子路径下都能正常工作。
-> 如需绑定自己的域名：在仓库 Settings → Pages 里填写 Custom domain，
-> 并在域名 DNS 添加指向 `<你的用户名>.github.io` 的 CNAME 记录。
-
-## 替换成自己的内容
-
-- **名字**：每个页面 `<title>`、`.site-title`、`.drawer-title`、页脚中的 “Your Name”。
-- **照片**：首页照片目前是占位图 `assets/photo.svg`（Google Sites 的图片 CDN 有防盗链，
-  无法自动下载原图）。请把你自己的照片保存为 `assets/photo.jpg`，
-  并把 `index.html` 中 `<img class="photo" src="assets/photo.svg">` 改为
-  `src="assets/photo.jpg"`。
-- **简介 / 论文 / 教学 / 博客**：直接编辑对应 HTML 里的文字；论文条目复制
-  `<div class="paper">…</div>` 块即可，`*` 表示通讯作者、`^` 表示同等贡献。
-- **配色**：`css/style.css` 开头 `:root` 中的 `--crimson` 等变量。
+日常更新流程：改 `content/*.md` → `python3 build.py` → `git add -A && git commit && git push`。

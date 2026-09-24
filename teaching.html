@@ -13,51 +13,41 @@
 <body>
 
 <header class="site-header">
-  <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
-    <span></span><span></span><span></span>
-  </button>
   <a class="site-title" href="index.html">Chenyu Xue</a>
+  <nav class="site-nav" aria-label="Site">
+    <a href="index.html">Home</a>
+    <a href="blogs.html">Blogs</a>
+    <a href="research.html">Research</a>
+    <a href="teaching.html" aria-current="page">Teaching &amp; Service</a>
+  </nav>
 </header>
 
-<div class="nav-overlay"></div>
-<nav class="nav-drawer" id="nav-drawer" aria-label="Site">
-  <div class="drawer-title">Chenyu Xue</div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="blogs.html">Blogs</a></li>
-    <li><a href="research.html">Research</a></li>
-    <li><a href="teaching.html" aria-current="page">Teaching &amp; Service</a></li>
-  </ul>
-</nav>
-
 <main class="content">
-<h2>Teaching Experience</h2>
+<div class="page-body">
+<h2 id="teaching-experience">Teaching Experience</h2>
 <ol class="papers">
-<li>
-<p>Introduction to Machine Learning, Spring 2026 (ECUST, Undergraduate Level)</p>
+<li id="p1"><p>Introduction to Machine Learning, Spring 2026 (ECUST, Undergraduate Level)</p>
 </li>
-<li>
-<p>Introduction to Decision Analytics and Revenue Management, Spring 2026 (ECUST, Undergraduate Level)</p>
+<li id="p2"><p>Introduction to Decision Analytics and Revenue Management, Spring 2026 (ECUST, Undergraduate Level)</p>
 </li>
-<li>
-<p>Optimization Method, Fall 2026 (ECUST, Graduate Level)</p>
+<li id="p3"><p>Optimization Method, Fall 2026 (ECUST, Graduate Level)</p>
 </li>
 </ol>
-<h2>Service</h2>
-<ul class="details">
-<li>
-<p>Reviewer for UAI 2025, ICML 2025, NeurIPS 2025</p>
-</li>
-<li>
-<p>Reviewer for ICML 2026, UAI 2026</p>
-</li>
+<h2 id="service">Service</h2>
+<ul class="details flat">
+<li id="t1"><p>Reviewer for UAI 2025, ICML 2025, NeurIPS 2025</p></li>
+<li id="t2"><p>Reviewer for ICML 2026, UAI 2026</p></li>
 </ul>
+</div>
+<nav class="toc-widget" aria-label="Contents">
+<div class="toc-panel" id="toc-panel">
+<a href="#teaching-experience">Teaching Experience</a>
+<a href="#service">Service</a>
+</div>
+<button class="toc-fab" type="button" aria-expanded="false" aria-controls="toc-panel">Contents</button>
+</nav>
 </main>
 
-<footer class="site-footer">
-  &copy; 2026 Chenyu Xue
-</footer>
-
-<script src="js/nav.js"></script>
+<script src="js/toc.js"></script>
 </body>
 </html>
