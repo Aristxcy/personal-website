@@ -2,6 +2,6 @@
 
 ### 1. AI-assisted Results for Assortment Optimization
 
-1. **A PTAS for Assortment Optimization under the Mallows Choice Model**, see [here](files/mallows-ptas.pdf), to be verified.
+[1] **A Polynomial-Time Approximation Scheme for Assortment Optimization under the Mallows Model**, see [here](files/mallows_ptas.pdf), to be verified.
 
-TL;DR: This paper studies constrained assortment optimization when customer rankings follow a single Kendall–Mallows model with an outside option, where the seller maximizes expected revenue under a cardinality and/or one knapsack constraint. It gives a deterministic polynomial-time approximation scheme that returns a feasible assortment with revenue at least (1−ε) times optimal, via a layered dynamic program over compressed product factors together with an exact bit-complexity analysis.
+TL;DR: We provide a deterministic PTAS for assortment optimization under the Mallows choice model. The algorithm keeps the first $O(1/\epsilon)$ offered items, compresses the tail into two rounded weight aggregates, and runs a longest-path DP.

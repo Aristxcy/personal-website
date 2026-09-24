@@ -119,7 +119,9 @@ def parse(md):
             while i < len(lines) and lines[i].strip() and not re.match(r'^(#{2,3}\s|>\s|!\[|\[\d+\]\s|\d+\.\s|-\s)', lines[i]):
                 buf.append(lines[i].strip())
                 i += 1
-            blocks.append({'t': 'p', 'html': inline(' '.join(buf))})
+            text = ' '.join(buf)
+            cls = ' class="tldr"' if text.startswith('TL;DR:') else ''
+            blocks.append({'t': 'p', 'html': inline(text), 'cls': cls})
     return blocks
 
 
@@ -142,7 +144,7 @@ def render(blocks, page_id):
         elif b['t'] == 'img':
             out.append('<img class="photo" src="%s" alt="%s">' % (esc(b['src']), esc(b['alt'])))
         elif b['t'] == 'p':
-            out.append('<p>%s</p>' % b['html'])
+            out.append('<p%s>%s</p>' % (b.get('cls', ''), b['html']))
         elif b['t'] == 'ol':
             bracket = b['items'][0].get('bracket')
             first = b['items'][0]['num']

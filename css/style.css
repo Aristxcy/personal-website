@@ -226,6 +226,11 @@ h3 {
 
 .note { font-size: 10.67px; }
 
+.tldr {
+  font-size: 13.33px;
+  line-height: 20px;
+}
+
 .sm { font-size: 13.33px; line-height: 20px; }
 
 /* ---------- Publications / lists ---------- */
