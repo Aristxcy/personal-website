@@ -129,6 +129,17 @@ p.center { text-align: center; }
   text-align: center;
 }
 
+.home-links {
+  margin: 10px 0 0 !important;
+}
+
+.home-links a {
+  display: inline-block;
+  color: var(--ink);
+}
+
+.home-links a:hover { color: var(--crimson); }
+
 .home-right p { margin: 0 0 16px; }
 
 .updated {
