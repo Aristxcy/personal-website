@@ -1,8 +1,8 @@
 ## Research
 
-### 1. Journal Papers Published/Accepted
-
 > ($\star$ stands for the corresponding author(s), $\dagger$ stands for equal contribution.)
+
+### 1. Journal Papers Published/Accepted
 
 [1] [**An Enhanced Alternating Direction Method of Multipliers-Based Interior Point Methods for Linear and Conic Optimization**](https://pubsonline.informs.org/doi/abs/10.1287/ijoc.2023.0017)
    - ($\alpha$-$\beta$) Qi Deng, Qing Feng, Wenzhi Gao, Dongdong Ge, Bo Jiang$^{\star}$, Yuntian Jiang, Jinsong Liu, Tianhao Liu, **Chenyu Xue**, Yinyu Ye, Chuwen Zhang
@@ -15,19 +15,19 @@
 [3] [**Assortment Optimization in the Presence of Focal Effect: Operational Insights and Efficient Algorithms**](https://journals.sagepub.com/doi/10.1177/10591478251368435)
    - ($\alpha$-$\beta$) Bo Jiang, Zizhuo Wang, **Chenyu Xue$^{\star}$**, Nanxi Zhang$^{\star}$
    - **Production and Operations Management (POM)**, 2025
-   - An extended abstract appears at the 19th Conference on Web and InterNet Economics (**WINE 2023**)
+   - An extended abstract appears at the 19th Conference on Web and Internet Economics (**WINE 2023**)
 
 [4] [**Beyond $O(\sqrt{T})$ Regret: Decoupling Learning and Decision-making in Online Linear Programming**](https://pubsonline.informs.org/doi/10.1287/opre.2024.1575)
    - ($\alpha$-$\beta$) Wenzhi Gao, Dongdong Ge$^{\star}$, Chunlin Sun, **Chenyu Xue$^{\star}$**, Yinyu Ye
    - **Operations Research (OR)**, 2026
    - An earlier version appears at the 41st International Conference on Machine Learning, titled by *[Decoupling Learning and Decision-Making: Breaking the barrier in Online Resource Allocation with First-Order Methods]*(https://proceedings.mlr.press/v235/gao24n.html)
 
-### 2. Papers under Revision/Review
+### 2. Papers Under Revision/Review
 
 [1] [**Robust Pricing with Randomization: A Multi-Criteria Perspective**](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5132337)
-   - ($\alpha$-$\beta$) Mingyang Fu, Hongyuan Lin*, **Chenyu Xue**
-   - Under Revision at **Operations Research (OR)**, 2025
-   - Best Paper Award (Third Prize), CSAMSE International Annual Conference 2026 
+   - ($\alpha$-$\beta$) Mingyang Fu, Hongyuan Lin$^{\star}$, **Chenyu Xue**
+   - Under Review at **Operations Research (OR)**, 2026
+   - **Best Paper Award (Third Prize)**, CSAMSE International Annual Conference 2026
 
 ### 3. Papers in Progress
 
@@ -40,7 +40,7 @@
 ### 4. Papers in Conference Proceedings
 
 [1] [**A Single-Loop Robust Policy Gradient Method for Robust Markov Decision Processes**](https://proceedings.mlr.press/v235/lin24u.html)
-   - Zhenwei Lin$^{\dagger}$, **Chenyu Xue**$^{\dagger}$, Qi Deng$^{\star}$, Yinyu Ye
+   - Zhenwei Lin$^{\dagger}$, **Chenyu Xue$^{\dagger}$**, Qi Deng$^{\star}$, Yinyu Ye
    - Proceedings of the 41st International Conference on Machine Learning (**ICML 2024**)
 
 [2] [**A Homogenization Approach for Gradient-Dominated Stochastic Optimization**](https://proceedings.mlr.press/v244/tan24a.html)
